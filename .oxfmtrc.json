@@ -1,0 +1,10 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "ignorePatterns": [
+    "dist/**",
+    ".local/**",
+    "test-results/**",
+    "playwright-report/**",
+    "pnpm-lock.yaml"
+  ]
+}

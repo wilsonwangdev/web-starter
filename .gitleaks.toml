@@ -1,0 +1,28 @@
+title = "Public source boundaries"
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Dependencies and local verification output are not project source"
+paths = [
+  '''(^|/)node_modules/''',
+  '''(^|/)\.git/''',
+  '''(^|/)\.local/''',
+  '''(^|/)test-results/''',
+  '''(^|/)playwright-report/''',
+  '''(^|/)coverage/''',
+]
+
+[[rules]]
+id = "local-user-directory"
+description = "Keep local user directories out of public source"
+regex = '''(?:/Users/|/home/)[A-Za-z0-9._-]+/'''
+
+[[rules]]
+id = "personal-email"
+description = "Use reserved example addresses in public fixtures"
+regex = '''[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}'''
+[[rules.allowlists]]
+regexTarget = "match"
+regexes = ['''(?i)@(example\.(com|org|net)|[^@]+\.invalid)$''']

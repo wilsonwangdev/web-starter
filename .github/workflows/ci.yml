@@ -1,0 +1,38 @@
+name: Quality checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  source-privacy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Scan public source
+        run: |
+          image="$(jq -r '.config.gitleaksImage' package.json)"
+          docker run --rm --network none --volume "$PWD:/repo:ro" "$image" dir /repo --redact --no-banner
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: pnpm/setup@fa36a5ef7dcdefc3a7cb25655c122e00cf6e636e # v3.1.2
+        with:
+          cache: true
+          save-cache: ${{ github.ref == 'refs/heads/main' }}
+          require-lockfile: true
+      - run: pnpm exec playwright install --with-deps chromium webkit
+      - run: pnpm check
+      - name: Scan browser assets
+        run: |
+          image="$(jq -r '.config.gitleaksImage' package.json)"
+          docker run --rm --network none --volume "$PWD:/repo:ro" "$image" dir /repo/dist --config /repo/.gitleaks.toml --redact --no-banner
