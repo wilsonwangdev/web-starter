@@ -1,7 +1,7 @@
 # 用模板开始
 
 1. 用 GitHub 的 **Use this template** 创建仓库并克隆。Agent 从 `AGENTS.md` 进入，无需安装外部个人技能。
-2. 修改 `package.json` 的 `name`、`version`、`description`、`product`；发布项目同时补齐自身的 `repository`、`bugs`、`homepage`。工具和界面从这里读取元信息，不复制一份配置。
+2. 修改 `package.json` 的 `name`、`version`、`description`、`product`；将 `repository`、`bugs`、`homepage` 换成项目真实地址，远端尚未创建时先移除模板地址。同步 README 的用途与使用方式，遵守许可证保留版权说明。工具和界面从清单读取元信息，不复制一份配置。
 3. 为 `product.storageNamespace` 选择独立且稳定的值。它决定本地存储隔离；展示名可以修改，已上线后变更存储键需提供迁移策略。
 4. 替换 `public/favicon.svg`，运行 `pnpm assets:generate` 并提交生成图标。清单与 HTML 元信息由构建生成。
 5. 运行贡献指南中的安装和检查命令。确定产品首页、主要操作和第一条真实流程，再替换 `App.tsx`、草稿示例及对应文案与测试。
