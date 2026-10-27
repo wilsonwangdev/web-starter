@@ -28,3 +28,5 @@ export function useDraft() {
     }));
   return { draft, updateDraft, isPersistent, hasDraft: Boolean(draft.title || draft.body) };
 }
+
+export type DraftState = ReturnType<typeof useDraft>;

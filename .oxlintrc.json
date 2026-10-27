@@ -34,6 +34,47 @@
     {
       "files": ["tests/e2e/**/*.ts"],
       "env": { "browser": true, "node": true }
+    },
+    {
+      "files": ["src/app/**/*.ts", "src/app/**/*.tsx"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["**/pages", "**/pages/**", "**/draft", "**/draft.*", "**/draft/**"],
+                "caseSensitive": true,
+                "message": "共享页面结构和文档元信息只依赖基础能力；页面与草稿由 App 组装。"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/pages/**/*.ts", "src/pages/**/*.tsx"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": [
+                  "**/App",
+                  "**/App.*",
+                  "**/App/**",
+                  "**/AppShell",
+                  "**/AppShell.*",
+                  "**/AppShell/**"
+                ],
+                "caseSensitive": true,
+                "message": "页面通过输入和动作参与组装，不反向依赖应用入口或外壳。"
+              }
+            ]
+          }
+        ]
+      }
     }
   ]
 }
