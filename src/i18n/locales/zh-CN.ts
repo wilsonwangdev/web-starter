@@ -52,6 +52,7 @@ export const zhCN = {
     words: "{{count}} 个字符",
   },
   settings: {
+    unavailable: "设置暂时无法加载。可关闭此窗口继续使用，稍后刷新页面重试。",
     title: "偏好设置",
     description: "让界面适应你的习惯。修改会自动保存在当前浏览器。",
     language: "界面语言",

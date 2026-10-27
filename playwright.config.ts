@@ -1,6 +1,8 @@
 import { defineConfig, devices } from "playwright/test";
 
 const channel = process.env.PLAYWRIGHT_CHROMIUM_CHANNEL;
+const previewPort = Number(process.env.PLAYWRIGHT_PREVIEW_PORT ?? 4323);
+const previewUrl = `http://127.0.0.1:${previewPort}`;
 
 export default defineConfig({
   testDir: "./tests/e2e",
@@ -8,10 +10,10 @@ export default defineConfig({
   forbidOnly: Boolean(process.env.CI),
   retries: process.env.CI ? 1 : 0,
   reporter: "list",
-  use: { baseURL: "http://127.0.0.1:4323", trace: "retain-on-failure" },
+  use: { baseURL: previewUrl, trace: "retain-on-failure" },
   webServer: {
-    command: "pnpm exec vite preview --host 127.0.0.1 --port 4323 --strictPort",
-    url: "http://127.0.0.1:4323",
+    command: `pnpm preview --host 127.0.0.1 --port ${previewPort} --strictPort`,
+    url: previewUrl,
     reuseExistingServer: false,
   },
   projects: [

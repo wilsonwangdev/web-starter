@@ -1,6 +1,7 @@
 import react from "@vitejs/plugin-react";
-import { playwright } from "@vitest/browser-playwright";
-import { defineConfig } from "vitest/config";
+import tailwindcss from "@tailwindcss/vite";
+import { playwright } from "vite-plus/test/browser-playwright";
+import { defineConfig } from "vite-plus";
 import { project } from "./shared/project.ts";
 
 const channel = process.env.PLAYWRIGHT_CHROMIUM_CHANNEL;
@@ -18,7 +19,7 @@ export default defineConfig({
       },
       {
         extends: false,
-        plugins: [react()],
+        plugins: [react(), tailwindcss()],
         define: { "import.meta.env.PUBLIC_PROJECT": JSON.stringify(project) },
         test: {
           name: "browser",

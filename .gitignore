@@ -28,6 +28,7 @@ dist-ssr
 .env.*
 !.env.example
 .local/
+.hallmark/
 .agents/local/
 AGENTS.local.md
 test-results/

@@ -59,6 +59,8 @@ export const en: TranslationMessages = {
     words: "{{count}} characters",
   },
   settings: {
+    unavailable:
+      "Preferences could not load. Close this dialog to keep working, then refresh the page later to try again.",
     title: "Preferences",
     description: "Make the space comfortable. Changes save automatically in this browser.",
     language: "Interface language",

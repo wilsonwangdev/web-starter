@@ -8,7 +8,7 @@ pnpm exec playwright install chromium webkit
 pnpm check
 ```
 
-Linux 首次安装浏览器可加 `--with-deps`。`pnpm fmt` 修正格式；命令和版本以 `package.json` 为准。
+Linux 首次安装浏览器可加 `--with-deps`。`pnpm fmt` 修正格式；用户命令和运行环境以 `package.json` 为准，工具精确版本通过清单引用工作区 catalog。可选 `pnpm build:cached` 复用构建产物，完整验收仍使用 `pnpm check`。
 
 安装依赖会启用 Husky。提交前检查暂存内容的代码、样式、格式与完整项目类型；CI 另外运行 Node、真实浏览器与生产构建验收。不要跳过钩子来绕过错误。
 

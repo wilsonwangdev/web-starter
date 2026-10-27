@@ -56,7 +56,8 @@ test("preferences change the interface and survive a reload", async ({ page }) =
   let dialog = page.getByRole("dialog", { name: "Preferences", exact: true });
   await dialog.getByRole("radio", { name: "Dark", exact: true }).check();
   await dialog.getByRole("radio", { name: "Moss", exact: true }).check();
-  await dialog.getByRole("radio", { name: "Compact", exact: true }).check();
+  await dialog.getByRole("combobox", { name: "Density", exact: true }).click();
+  await page.getByRole("option", { name: "Compact", exact: true }).click();
   await dialog.getByRole("radio", { name: "简体中文", exact: true }).check();
   dialog = page.getByRole("dialog", { name: "偏好设置", exact: true });
   await expect(dialog.getByRole("radio", { name: "暗色", exact: true })).toBeChecked();
@@ -72,7 +73,7 @@ test("preferences change the interface and survive a reload", async ({ page }) =
   await page.getByRole("button", { name: "偏好设置", exact: true }).click();
   dialog = page.getByRole("dialog", { name: "偏好设置", exact: true });
   await expect(dialog.getByRole("radio", { name: "苔绿", exact: true })).toBeChecked();
-  await expect(dialog.getByRole("radio", { name: "紧凑", exact: true })).toBeChecked();
+  await expect(dialog.getByRole("combobox", { name: "界面密度", exact: true })).toHaveText("紧凑");
   await dialog.getByRole("button", { name: "恢复默认偏好", exact: true }).click();
   await expect(page.locator("html")).toHaveAttribute("lang", "en");
   await expect(page.locator("html")).toHaveAttribute("data-mode", "light");
@@ -92,6 +93,25 @@ test("system appearance changes while the application is open", async ({ page })
   await expect
     .poll(() => page.locator('meta[name="theme-color"]').getAttribute("content"))
     .not.toBe(darkColor);
+});
+
+test("keyboard focus remains visible in forced colors", async ({ page, browserName }) => {
+  test.skip(browserName !== "chromium", "Forced-colors emulation requires Chromium.");
+  await page.emulateMedia({ forcedColors: "active" });
+  await page.goto("/");
+  const trigger = page.getByRole("button", { name: "Preferences", exact: true });
+  await trigger.focus();
+  await expect(trigger).toHaveCSS("outline-style", "solid");
+  await trigger.press("Enter");
+  const density = page.getByRole("combobox", { name: "Density", exact: true });
+  await density.focus();
+  await expect(density).toBeFocused();
+  await expect(density).toHaveCSS("outline-style", "solid");
+  await expect
+    .poll(() =>
+      density.evaluate((element) => Number.parseFloat(getComputedStyle(element).outlineWidth)),
+    )
+    .toBeGreaterThan(0);
 });
 
 test("the narrow layout keeps navigation, the editor and preferences within the viewport", async ({
@@ -118,7 +138,8 @@ test("the narrow layout keeps navigation, the editor and preferences within the 
   await expect(dialog).toBeVisible();
   await expectNoOverflow();
   await dialog.getByRole("radio", { name: "Dark", exact: true }).check();
-  await dialog.getByRole("radio", { name: "Compact", exact: true }).check();
+  await dialog.getByRole("combobox", { name: "Density", exact: true }).click();
+  await page.getByRole("option", { name: "Compact", exact: true }).click();
   await dialog.getByRole("button", { name: "Close", exact: true }).click();
   await expect(page.getByRole("textbox", { name: "Ideas and notes", exact: true })).toBeVisible();
   await expectNoOverflow();

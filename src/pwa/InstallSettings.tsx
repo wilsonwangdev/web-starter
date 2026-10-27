@@ -1,6 +1,7 @@
 import { Download } from "lucide-react";
 import { useCopy } from "../i18n/useCopy";
 import { useInstall } from "./useInstall";
+import { Button } from "@web-starter/ui/components/button";
 
 export function InstallSettings() {
   const { t } = useCopy();
@@ -11,7 +12,7 @@ export function InstallSettings() {
       <p className="setting-hint">{t("install.description")}</p>
       <output className="setting-hint">{t(`install.${status}`)}</output>
       {status === "available" && (
-        <button
+        <Button
           className="button button-primary"
           type="button"
           onClick={() => {
@@ -20,7 +21,7 @@ export function InstallSettings() {
         >
           <Download aria-hidden="true" />
           {t("install.install")}
-        </button>
+        </Button>
       )}
     </section>
   );

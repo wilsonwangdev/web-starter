@@ -4,6 +4,7 @@ import { Link } from "react-router";
 import { useDocumentTitle } from "../app/useDocumentTitle";
 import { useCopy } from "../i18n/useCopy";
 import { PreferencesDialog } from "../preferences/PreferencesDialog";
+import { Button } from "@web-starter/ui/components/button";
 
 export function HomePage({
   hasDraft,
@@ -25,15 +26,17 @@ export function HomePage({
           <h1 id="home-title">{t("home.title")}</h1>
           <p className="hero-description">{t("home.description")}</p>
           <div className="hero-actions">
-            <Link className="button button-primary" to="/workspace">
-              {hasDraft ? t("home.resume") : t("home.start")}
-              <ArrowRight aria-hidden="true" />
-            </Link>
+            <Button asChild className="button button-primary">
+              <Link to="/workspace">
+                {hasDraft ? t("home.resume") : t("home.start")}
+                <ArrowRight aria-hidden="true" />
+              </Link>
+            </Button>
             <PreferencesDialog extraSettings={extraSettings}>
-              <button type="button" className="text-button">
+              <Button variant="ghost" type="button" className="text-button">
                 {t("home.secondary")}
                 <ArrowUpRight aria-hidden="true" />
-              </button>
+              </Button>
             </PreferencesDialog>
           </div>
           <p className="subtle-note">{t("home.note")}</p>
