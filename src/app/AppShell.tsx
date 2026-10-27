@@ -4,6 +4,7 @@ import { Link, NavLink, ScrollRestoration } from "react-router";
 import { useCopy } from "../i18n/useCopy";
 import { PreferencesDialog } from "../preferences/PreferencesDialog";
 import { project } from "../project";
+import { Button } from "@web-starter/ui/components/button";
 
 interface AppShellProps {
   children: ReactNode;
@@ -33,13 +34,15 @@ export function AppShell({ children, extraSettings }: AppShellProps) {
           <NavLink to="/workspace">{t("nav.workspace")}</NavLink>
         </nav>
         <PreferencesDialog extraSettings={extraSettings}>
-          <button
+          <Button
+            variant="ghost"
+            size="icon"
             className="icon-button preferences-trigger"
             type="button"
             aria-label={t("nav.preferences")}
           >
             <Settings2 aria-hidden="true" />
-          </button>
+          </Button>
         </PreferencesDialog>
       </header>
       <main id="main" className="main-content" tabIndex={-1}>

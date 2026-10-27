@@ -1,5 +1,5 @@
-import { afterEach, beforeEach, expect, test, vi } from "vitest";
-import { page } from "vitest/browser";
+import { afterEach, beforeEach, expect, test, vi } from "vite-plus/test";
+import { page } from "vite-plus/test/browser";
 import { cleanup, render } from "vitest-browser-react";
 import { AppProviders } from "../../src/preferences/Providers";
 import { InstallProvider } from "../../src/pwa/InstallProvider";

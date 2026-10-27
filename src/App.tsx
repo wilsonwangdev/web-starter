@@ -5,7 +5,6 @@ import { useDraft } from "./draft";
 import { HomePage } from "./pages/HomePage";
 import { MissingPage } from "./pages/MissingPage";
 import { WorkspacePage } from "./pages/WorkspacePage";
-import "./App.css";
 
 export default function App({ extraSettings }: { extraSettings?: ReactNode }) {
   const { draft, updateDraft, isPersistent, hasDraft } = useDraft();

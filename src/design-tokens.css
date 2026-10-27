@@ -55,6 +55,7 @@
   --color-accent-soft: #eeeef7;
   --color-focus: var(--color-accent);
   --color-warning: #934f27;
+  --color-error: #a63735;
   --color-overlay: #161a1d70;
   --color-shadow: #25272812;
   --shadow-sheet: 0 10px 40px var(--color-shadow);
@@ -79,6 +80,7 @@
   --color-ocean: #91c3d4;
   --color-accent-soft: #2c2d40;
   --color-warning: #e6b182;
+  --color-error: #edaaa0;
   --color-overlay: #070a0bbb;
   --color-shadow: #00000024;
 }

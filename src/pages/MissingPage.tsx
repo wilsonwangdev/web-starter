@@ -2,6 +2,7 @@ import { ArrowRight } from "lucide-react";
 import { Link } from "react-router";
 import { useDocumentTitle } from "../app/useDocumentTitle";
 import { useCopy } from "../i18n/useCopy";
+import { Button } from "@web-starter/ui/components/button";
 
 export function MissingPage() {
   const { t } = useCopy();
@@ -11,10 +12,12 @@ export function MissingPage() {
       <p className="eyebrow">404</p>
       <h1>{t("missing.title")}</h1>
       <p>{t("missing.description")}</p>
-      <Link className="button button-primary" to="/">
-        {t("common.backHome")}
-        <ArrowRight aria-hidden="true" />
-      </Link>
+      <Button asChild className="button button-primary">
+        <Link to="/">
+          {t("common.backHome")}
+          <ArrowRight aria-hidden="true" />
+        </Link>
+      </Button>
     </section>
   );
 }

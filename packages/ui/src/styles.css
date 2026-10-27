@@ -1,0 +1,77 @@
+@layer theme, base, components, utilities, app;
+@import "tailwindcss/theme.css" layer(theme) prefix(ui);
+@import "tailwindcss/utilities.css" layer(utilities) prefix(ui) source(none);
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@source "./";
+@custom-variant dark (&:where([data-mode="dark"], [data-mode="dark"] *));
+
+@theme inline {
+  --font-sans: var(--font-sans);
+  --font-heading: var(--font-sans);
+  --font-weight-medium: var(--weight-medium);
+  --font-weight-semibold: var(--weight-semibold);
+  --text-xs: var(--text-xs);
+  --text-sm: var(--text-sm);
+  --text-base: var(--text-base);
+  --text-xs--line-height: var(--leading-heading);
+  --text-sm--line-height: var(--leading-heading);
+  --text-base--line-height: var(--leading-body);
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-md);
+  --radius-xl: var(--radius-lg);
+  --shadow-md: var(--shadow-sheet);
+  --color-background: var(--color-surface);
+  --color-foreground: var(--color-ink);
+  --color-popover: var(--color-surface);
+  --color-popover-foreground: var(--color-ink);
+  --color-primary: var(--color-primary);
+  --color-primary-foreground: var(--color-on-primary);
+  --color-secondary: var(--color-surface-muted);
+  --color-secondary-foreground: var(--color-ink);
+  --color-muted: var(--color-surface-muted);
+  --color-muted-foreground: var(--color-muted);
+  --color-accent: var(--color-accent-soft);
+  --color-accent-foreground: var(--color-ink);
+  --color-destructive: var(--color-error);
+  --color-border: var(--color-border);
+  --color-input: var(--color-border-strong);
+  --color-ring: var(--color-focus);
+  --color-overlay: var(--color-overlay);
+}
+
+@layer components {
+  :root {
+    --secondary: var(--color-surface-muted);
+    --foreground: var(--color-ink);
+  }
+  [data-slot="button"],
+  [data-slot="select-trigger"],
+  [data-slot="select-item"] {
+    min-height: var(--control-height);
+  }
+  [data-slot="button"][data-size^="icon"] {
+    min-width: var(--control-height);
+  }
+  [data-slot="select-item"] {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+  [data-slot="select-trigger"] {
+    min-width: 0;
+  }
+  [data-slot="select-content"] {
+    max-width: calc(
+      100vw - var(--space-8) - env(safe-area-inset-left) - env(safe-area-inset-right)
+    );
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-slot="dialog-content"],
+    [data-slot="dialog-overlay"],
+    [data-slot="select-content"] {
+      animation: none;
+      transition: none;
+    }
+  }
+}

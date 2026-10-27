@@ -1,5 +1,5 @@
-import { afterEach, beforeEach, expect, test, vi } from "vitest";
-import { page, userEvent } from "vitest/browser";
+import { afterEach, beforeEach, expect, test, vi } from "vite-plus/test";
+import { page, userEvent } from "vite-plus/test/browser";
 import { cleanup, render } from "vitest-browser-react";
 import { createMemoryRouter, RouterProvider } from "react-router";
 import App from "../../src/App";
@@ -58,7 +58,8 @@ test("语言、外观和可选配色立即生效，重开后仍保留", async ()
   await page.getByRole("radio", { name: "Dark", exact: true }).click();
   await page.getByRole("radio", { name: "Moss", exact: true }).click();
   await page.getByRole("radio", { name: "Clay", exact: true }).click();
-  await page.getByRole("radio", { name: "Compact", exact: true }).click();
+  await page.getByRole("combobox", { name: "Density", exact: true }).click();
+  await page.getByRole("option", { name: "Compact", exact: true }).click();
   expect(document.documentElement.dataset.mode).toBe("dark");
   expect(document.documentElement.dataset.palette).toBe("moss");
   expect(document.documentElement.dataset.accent).toBe("clay");
@@ -74,6 +75,9 @@ test("语言、外观和可选配色立即生效，重开后仍保留", async ()
   await expect.element(page.getByRole("radio", { name: "Dark", exact: true })).toBeChecked();
   await expect.element(page.getByRole("radio", { name: "Moss", exact: true })).toBeChecked();
   await expect.element(page.getByRole("radio", { name: "Clay", exact: true })).toBeChecked();
+  await expect
+    .element(page.getByRole("combobox", { name: "Density", exact: true }))
+    .toHaveTextContent("Compact");
 });
 
 test("弹窗保持真实焦点，关闭后回到打开它的操作", async () => {
@@ -82,6 +86,13 @@ test("弹窗保持真实焦点，关闭后回到打开它的操作", async () =>
   await trigger.click();
   await expect.element(page.getByRole("dialog")).toBeVisible();
   expect(document.activeElement?.closest('[role="dialog"]')).not.toBeNull();
+  const density = page.getByRole("combobox", { name: "界面密度", exact: true });
+  await density.click();
+  await expect.element(page.getByRole("listbox")).toBeVisible();
+  await userEvent.keyboard("{Escape}");
+  await expect.element(page.getByRole("listbox")).not.toBeInTheDocument();
+  await expect.element(page.getByRole("dialog")).toBeVisible();
+  await expect.element(density).toHaveFocus();
   await userEvent.keyboard("{Escape}");
   await expect.element(page.getByRole("dialog")).not.toBeInTheDocument();
   await expect.element(trigger).toHaveFocus();
@@ -120,8 +131,11 @@ test("320 像素下核心输入和可滚动设置仍可操作", async () => {
   expect(document.documentElement.scrollWidth).toBeLessThanOrEqual(window.innerWidth);
   await page.getByRole("button", { name: "偏好设置", exact: true }).click();
   await page.getByRole("radio", { name: "English", exact: true }).click();
-  await page.getByRole("radio", { name: "Compact", exact: true }).click();
-  await expect.element(page.getByRole("radio", { name: "Compact", exact: true })).toBeChecked();
+  await page.getByRole("combobox", { name: "Density", exact: true }).click();
+  await page.getByRole("option", { name: "Compact", exact: true }).click();
+  await expect
+    .element(page.getByRole("combobox", { name: "Density", exact: true }))
+    .toHaveTextContent("Compact");
   await page.getByRole("button", { name: "Close", exact: true }).click();
   expect(document.documentElement.scrollWidth).toBeLessThanOrEqual(window.innerWidth);
 });
