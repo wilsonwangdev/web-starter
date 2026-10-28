@@ -214,7 +214,7 @@ for (const scenario of [
     await page.route(/\/assets\/[^/]+\.js(?:\?.*)?$/, (route) => route.abort());
     await page.goto("/", { waitUntil: "domcontentloaded" });
     await expect(page.locator("html")).toHaveAttribute("data-mode", scenario.expected);
-    await expect(page.locator("#root")).toBeEmpty();
+    await expect(page.locator("[data-startup-error]")).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.style.colorScheme)).toBe(
       scenario.expected,
     );

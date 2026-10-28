@@ -11,4 +11,6 @@ pnpm dev
 
 工具版本与命令以 [package.json](package.json) 为准。包含多语言、外观偏好、响应式页面与安装基础；以本地草稿演示真实交互。
 
+Agent 对话与工具调用由独立的 Agent Web Starter 展示，扩展边界见[应用实例](docs/start.md#应用实例)。
+
 [贡献](CONTRIBUTING.md) · [设计](docs/design.md) · [架构](docs/architecture.md) · [可选部署](docs/deployment.md) · [Agent 入口](AGENTS.md)

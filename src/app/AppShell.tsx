@@ -15,7 +15,14 @@ export function AppShell({ children, extraSettings }: AppShellProps) {
   const { t } = useCopy();
   return (
     <div className="app-shell">
-      <a className="skip-link" href="#main">
+      <a
+        className="skip-link"
+        href="#main"
+        onClick={(event) => {
+          event.preventDefault();
+          document.getElementById("main")?.focus();
+        }}
+      >
         {t("nav.skip")}
       </a>
       <header className="site-header page-width">

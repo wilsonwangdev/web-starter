@@ -1,0 +1,201 @@
+@import "./design-tokens.css";
+
+/* HTML 直接加载，应用脚本尚未到达时也保持同一主题与布局。 */
+html {
+  background: var(--color-page);
+  color: var(--color-ink);
+}
+body {
+  margin: 0;
+}
+.startup-shell,
+.startup-shell *,
+.startup-recovery {
+  box-sizing: border-box;
+}
+.startup-shell {
+  min-height: 100dvh;
+  padding-block: env(safe-area-inset-top) env(safe-area-inset-bottom);
+}
+.startup-header,
+.startup-content {
+  width: min(100% - var(--page-gutter) * 2, var(--content-width));
+  margin-inline: auto;
+}
+.startup-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 6.25rem;
+  border-bottom: 1px solid var(--color-border);
+}
+.startup-block {
+  display: block;
+  flex-shrink: 0;
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-muted);
+  animation: startup-breathe 1.8s ease-in-out infinite alternate;
+}
+.startup-mark,
+.startup-control {
+  width: var(--space-8);
+  height: var(--space-8);
+  border-radius: var(--radius-md);
+}
+.startup-brand {
+  width: 4rem;
+  height: var(--space-4);
+}
+.startup-nav {
+  display: flex;
+  gap: var(--space-6);
+  margin-left: auto;
+  margin-right: var(--space-3);
+}
+.startup-nav .startup-block {
+  width: 3rem;
+  height: var(--space-3);
+}
+.startup-content {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(16rem, 0.8fr);
+  align-items: center;
+  gap: var(--space-12);
+  min-height: 38rem;
+  padding-block: var(--section-space);
+}
+.startup-copy {
+  min-width: 0;
+}
+.startup-eyebrow {
+  width: 8rem;
+  height: var(--space-3);
+  margin-bottom: var(--space-8);
+}
+.startup-title {
+  width: 92%;
+  height: clamp(2rem, 4vw, 3.5rem);
+  margin-top: var(--space-3);
+}
+.startup-title-short {
+  width: 68%;
+  margin-bottom: var(--space-8);
+}
+.startup-line {
+  width: 88%;
+  height: var(--space-3);
+  margin-top: var(--space-3);
+}
+.startup-line-short {
+  width: 64%;
+}
+.startup-action {
+  width: 9rem;
+  height: var(--control-height);
+  margin-top: var(--space-10);
+  border-radius: var(--radius-md);
+}
+.startup-sheet {
+  width: min(100%, 16rem);
+  aspect-ratio: 0.85;
+  margin-inline: auto;
+  padding: var(--space-8);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+.startup-sheet .startup-line:first-child {
+  margin-top: var(--space-10);
+  margin-bottom: var(--space-6);
+}
+.startup-recovery {
+  width: min(100% - var(--page-gutter) * 2, 32rem);
+  min-height: 100dvh;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: var(--space-5);
+  padding-block: var(--space-8);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-body);
+}
+.startup-recovery h1,
+.startup-recovery p {
+  margin: 0;
+}
+.startup-recovery h1 {
+  font-size: var(--text-title);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading);
+}
+.startup-recovery p {
+  color: var(--color-muted);
+}
+.startup-reload {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--control-height);
+  border: 0;
+  padding-inline: var(--space-5);
+  border-radius: var(--radius-md);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  text-decoration: none;
+  font: inherit;
+  cursor: pointer;
+}
+.startup-reload:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+}
+.startup-recovery[hidden] {
+  display: none;
+}
+@media (max-width: 40rem) {
+  .startup-header {
+    min-height: 5rem;
+  }
+  .startup-brand {
+    width: 2.5rem;
+  }
+  .startup-nav {
+    gap: var(--space-3);
+    margin-right: 0;
+  }
+  .startup-content {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: auto;
+    gap: var(--space-10);
+    padding-bottom: var(--space-12);
+  }
+  .startup-sheet {
+    width: min(12rem, 65%);
+    aspect-ratio: 1.2;
+    margin-left: auto;
+    margin-right: var(--space-4);
+    padding: var(--space-5);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .startup-block {
+    animation: none;
+  }
+}
+@media (forced-colors: active) {
+  .startup-block,
+  .startup-sheet,
+  .startup-reload {
+    border: 1px solid ButtonText;
+  }
+}
+@keyframes startup-breathe {
+  from {
+    opacity: 0.55;
+  }
+  to {
+    opacity: 1;
+  }
+}

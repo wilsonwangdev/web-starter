@@ -1,14 +1,19 @@
 import type { Plugin } from "vite";
-import { webManifest } from "./web-manifest.ts";
+import { createWebManifest } from "./web-manifest.ts";
 
 // Vite 负责开发与构建；此接线仅派生一份项目清单产物。
 export function manifestAsset(): Plugin {
-  const source = JSON.stringify(webManifest);
+  let base = "/";
+  let source = JSON.stringify(createWebManifest());
   return {
     name: "project-manifest",
+    configResolved(config) {
+      base = config.base;
+      source = JSON.stringify(createWebManifest(base));
+    },
     configureServer(server) {
       server.middlewares.use((request, response, next) => {
-        if (request.url?.split("?", 1)[0] !== "/manifest.webmanifest") return next();
+        if (request.url?.split("?", 1)[0] !== `${base}manifest.webmanifest`) return next();
         if (request.method !== "GET" && request.method !== "HEAD") {
           response.statusCode = 405;
           response.setHeader("Allow", "GET, HEAD");

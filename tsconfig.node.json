@@ -23,8 +23,10 @@
     "shared",
     "build/**/*.ts",
     "tests/*.test.ts",
+    "packages/ui/tests",
     "vitest.config.ts",
     "playwright.config.ts",
+    "playwright.pages.config.ts",
     "pwa-assets.config.ts",
     "lint-staged.config.ts",
     "tooling"

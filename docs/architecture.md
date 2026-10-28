@@ -2,9 +2,11 @@
 
 ## 标准入口
 
-`index.html → src/main.tsx → AppProviders / InstallProvider → React Router → App`。项目内 Vite+ 调用 Vite 完成开发和构建；保留官方模板的 `src`、`public`、`index.html` 入口，不维护第二个服务器或自定义项目生成器。
+`index.html → src/bootstrap.ts → src/main.tsx → AppProviders / InstallProvider → React Router → App`。项目内 Vite+ 调用 Vite 完成开发和构建；保留官方模板的 `src`、`public`、`index.html` 入口，不维护第二个服务器或自定义项目生成器。
 
-`main.tsx` 负责挂载、全局提供器和浏览器路由初始化；`App.tsx` 只组装共享草稿、页面路由与外壳。`app/AppShell.tsx` 保存导航、设置入口、页脚和滚动恢复；`pages/` 中各页面负责各自展示与交互，页面标题通过 `app/useDocumentTitle.ts` 随当前页面和语言更新。
+HTML 独立加载 `startup.css` 并呈现结构骨架，`bootstrap.ts` 通过原生动态导入启动应用；入口失败、应用模块失败和 React 未捕获错误共用静态恢复面板，不引入独立加载框架或强制延时。为兼容部分 WebKit 对失败 `modulepreload` 的负缓存，关闭额外模块预加载，原生动态导入和异步 CSS 继续由 Vite 处理。
+
+`main.tsx` 负责挂载、全局提供器和路由初始化；默认构建使用浏览器路由并读取 Vite `BASE_URL`，Pages 模式使用官方哈希路由，不依赖主机页面重写。`App.tsx` 只组装共享草稿、页面路由与外壳。`app/AppShell.tsx` 保存导航、设置入口、页脚和滚动恢复；`pages/` 中各页面负责各自展示与交互，页面标题通过 `app/useDocumentTitle.ts` 随当前页面和语言更新。
 
 根应用与 `packages/ui/` 通过 pnpm 工作区连接。组件包以 TypeScript 源码提供 Button、Dialog、Select 和样式，不维护额外组件构建器；Vite 处理源码转换。应用通过清单中的 `workspace:*` 与组件子路径消费，禁止穿透 `packages/ui/src`。内部变体不在公开导出目录中，不设置聚合入口，以保留按需导入边界。
 
@@ -20,7 +22,7 @@
 
 ## 基础组件
 
-基础组件不反向引用应用页面、偏好状态、工程配置或完整清单。组件包通过 `peerDependencies` 声明 React 与 React DOM，由应用提供统一运行时。包的样式入口声明 CSS 副作用，避免构建时被移除；应用主题值与状态不迁入组件包。根类型检查、lint、样式检查、提交钩子与 CI 同时覆盖包源码。
+基础组件不反向引用应用页面、偏好状态、工程配置或完整清单。组件包通过 `peerDependencies` 声明 React 与 React DOM，由应用提供统一运行时。类名合并使用 `cn/engine` 和上游完整预编译表，只指定 `ui` 前缀，浏览器不携带配置编译器，也不生成依赖某个消费应用的裁剪规则。包的样式入口声明 CSS 副作用，避免构建时被移除；应用主题值与状态不迁入组件包。根类型检查、lint、样式检查、提交钩子与 CI 同时覆盖包源码。
 
 设置弹窗的外壳、标题、关闭按钮和触发入口保持即时可用；设置内容通过 React.lazy 和 Suspense 按首次打开加载。加载失败记录异常并显示局部提示，保留页面和草稿，使用者可关闭后稍后刷新；迟到的加载结果不会重新打开已关闭的弹窗。偏好提供器与安装事件捕获继续常驻，不随面板加载而移动。
 
@@ -28,11 +30,13 @@
 
 `package.json` 是项目身份、产品版本、运行环境要求与用户命令的单一来源。Vite+ 关联依赖通过清单引用 `pnpm-workspace.yaml` 的 catalog 字段，在该处维护这组精确版本；其他依赖由各包清单维护，锁文件记录最终解析。`shared/project.ts` 显式投影可公开字段；Vite 只把这份投影注入浏览器，`src/project.ts` 提供类型入口。不要把整个清单或环境变量打包到客户端。
 
-`build/metadata.ts` 与 `build/web-manifest.ts` 通过 Vite 原生钩子提供开发清单、构建清单和 HTML 转义；它们是项目元信息适配，不能扩展成自建构建框架。安装图标使用官方 PWA Assets Generator。
+`build/metadata.ts` 与 `build/web-manifest.ts` 通过 Vite 原生钩子提供开发清单、构建清单和 HTML 转义；清单的标识、入口、作用域和图标地址跟随 Vite 实际基路径，HTML 资源使用同一 `BASE_URL`。它们是项目元信息适配，不能扩展成自建构建框架。安装图标使用官方 PWA Assets Generator。
 
 ## 运行环境
 
 生产浏览器源码只由 `tsconfig.app.json` 检查，组件测试与生产浏览器测试分别扩展为 `tsconfig.browser-tests.json`、`tsconfig.e2e.json`；后者为测试进程保留 Node 类型及页面回调所需 DOM 类型。Node 工具与需要 DOM 的 Vite 首屏桥接分别使用 `tsconfig.node.json`、`tsconfig.vite.json`。测试依赖不参与生产源码的类型环境；新增构建辅助代码放进对应项目的检查范围。
+
+浏览器中的草稿与偏好校验使用官方 `zod/mini`，保留相同的数据限制与运行时校验，通过函数式 API 去除未使用的方法；解析失败继续进入既有本地化恢复流程，不直接显示库错误。
 
 外观模式由 `next-themes` 管理。HTML 中的自包含初始化函数在模块加载前设置亮暗模式，避免首屏闪烁；它只做必要的早期处理。配色、强调色、密度和语言通过验证后的偏好状态生效，颜色值集中在 CSS 设计变量中。存储失败时保留当前页面的内容并提示，损坏记录回退默认值。
 
@@ -50,4 +54,4 @@ Vite+ 使用已有 Oxlint 和 Oxfmt 规则；`vite.config.ts` 组合类型化规
 
 ## 验证分层
 
-Vitest 的 Node 项目验证构建与数据边界，真实浏览器项目验证组件交互；Playwright 对 `dist` 的生产预览验证路由、持久化、首屏和代表性桌面/移动浏览器。状态归属、跨页草稿、异步取消、焦点和首屏表现继续通过行为验证；静态依赖检查不能证明这些行为。模拟设备不能替代真机安装和软键盘验收。CI 扫描源码和构建产物；运行记录留在本地或 CI，不写成模板规则。
+Vitest 的 Node 项目验证构建与数据边界，真实浏览器项目验证组件交互；Playwright 对 `dist` 的生产预览验证路由、持久化、首屏和代表性桌面/移动浏览器；`test:pages` 单独构建项目子路径产物，验证哈希路由刷新、偏好和安装资源。状态归属、跨页草稿、异步取消、焦点和首屏表现继续通过行为验证；静态依赖检查不能证明这些行为。模拟设备不能替代真机安装和软键盘验收。CI 扫描源码和构建产物；运行记录留在本地或 CI，不写成模板规则。

@@ -2,16 +2,73 @@
 <html lang="%HTML_PROJECT_LOCALE%">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png" />
-    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" type="image/svg+xml" href="%BASE_URL%favicon.svg" />
+    <link rel="apple-touch-icon" href="%BASE_URL%apple-touch-icon-180x180.png" />
+    <link rel="manifest" href="%BASE_URL%manifest.webmanifest" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="%HTML_PROJECT_THEME%" />
     <meta name="description" content="%HTML_PROJECT_DESCRIPTION%" />
     <title>%HTML_PROJECT_TITLE%</title>
+    <link rel="stylesheet" href="/src/startup.css" />
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <div id="root">
+      <main
+        class="startup-shell"
+        aria-busy="true"
+        aria-label="%HTML_STARTUP_LOADING%"
+        data-startup-shell
+      >
+        <div class="startup-header" aria-hidden="true">
+          <span class="startup-block startup-mark"></span>
+          <span class="startup-block startup-brand"></span>
+          <span class="startup-nav">
+            <span class="startup-block"></span>
+            <span class="startup-block"></span>
+          </span>
+          <span class="startup-block startup-control"></span>
+        </div>
+        <div class="startup-content" aria-hidden="true">
+          <div class="startup-copy">
+            <span class="startup-block startup-eyebrow"></span>
+            <span class="startup-block startup-title"></span>
+            <span class="startup-block startup-title startup-title-short"></span>
+            <span class="startup-block startup-line"></span>
+            <span class="startup-block startup-line startup-line-short"></span>
+            <span class="startup-block startup-action"></span>
+          </div>
+          <div class="startup-sheet">
+            <span class="startup-block startup-line"></span>
+            <span class="startup-block startup-line"></span>
+            <span class="startup-block startup-line startup-line-short"></span>
+          </div>
+        </div>
+      </main>
+    </div>
+    <section
+      class="startup-recovery"
+      data-startup-error
+      hidden
+      role="alert"
+      aria-labelledby="startup-error-title"
+    >
+      <h1 id="startup-error-title" data-startup-error-title>%HTML_STARTUP_ERROR_TITLE%</h1>
+      <p data-startup-error-description>%HTML_STARTUP_ERROR_DESCRIPTION%</p>
+      <button class="startup-reload" type="button" data-startup-reload>
+        %HTML_STARTUP_RELOAD%
+      </button>
+    </section>
+    <noscript>
+      <style>
+        .startup-shell {
+          display: none;
+        }
+      </style>
+      <section class="startup-recovery">
+        <h1>%HTML_STARTUP_NO_SCRIPT_TITLE%</h1>
+        <p>%HTML_STARTUP_NO_SCRIPT_DESCRIPTION%</p>
+      </section>
+    </noscript>
+    <script type="module" src="/src/bootstrap.ts"></script>
   </body>
 </html>
