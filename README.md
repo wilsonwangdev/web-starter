@@ -2,6 +2,8 @@
 
 从官方 Vite React + TypeScript 模板起步，提供可持续维护的 Web 基础与 Agent 上下文。
 
+[在线演示](https://wilsonwangdev.github.io/web-starter/)
+
 使用 GitHub 的 **Use this template** 创建独立项目，再按[起步说明](docs/start.md)确定项目身份和第一条用户流程。
 
 ```sh
