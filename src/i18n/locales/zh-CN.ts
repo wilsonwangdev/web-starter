@@ -1,4 +1,12 @@
 export const zhCN = {
+  startup: {
+    loading: "正在加载应用",
+    title: "应用暂时无法打开",
+    description: "请检查网络后重新加载，保存在浏览器中的内容不会被清除。",
+    reload: "重新加载",
+    noScriptTitle: "请启用 JavaScript",
+    noScriptDescription: "此应用需要 JavaScript 才能打开工作区，启用后请重新加载页面。",
+  },
   install: {
     title: "添加到设备",
     description:

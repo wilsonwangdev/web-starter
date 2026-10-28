@@ -1,6 +1,15 @@
 import type { TranslationMessages } from "../schema.ts";
 
 export const en: TranslationMessages = {
+  startup: {
+    loading: "Loading the application",
+    title: "The application could not open",
+    description: "Check your connection and reload. Content saved in this browser will stay here.",
+    reload: "Reload",
+    noScriptTitle: "Enable JavaScript",
+    noScriptDescription:
+      "This application needs JavaScript to open the workspace. Enable it and reload the page.",
+  },
   install: {
     title: "Add to your device",
     description:

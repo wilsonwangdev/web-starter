@@ -1,12 +1,12 @@
-import { z } from "zod";
+import * as z from "zod/mini";
 import useLocalStorageState from "use-local-storage-state";
 import { project } from "./project";
 
 const draftSchema = z.object({
   version: z.literal(1),
-  title: z.string().max(160),
-  body: z.string().max(50_000),
-  updatedAt: z.iso.datetime().nullable(),
+  title: z.string().check(z.maxLength(160)),
+  body: z.string().check(z.maxLength(50_000)),
+  updatedAt: z.nullable(z.iso.datetime()),
 });
 export type Draft = z.infer<typeof draftSchema>;
 const emptyDraft: Draft = { version: 1, title: "", body: "", updatedAt: null };

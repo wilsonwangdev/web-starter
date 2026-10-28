@@ -1,5 +1,6 @@
-import { z } from "zod";
+import * as z from "zod/mini";
 import { appearanceStorageKey } from "../../shared/appearance";
+import { interfacePreferenceStorageKey } from "../../shared/preferences";
 import { project } from "../project";
 
 export const localeSchema = z.enum(["zh-CN", "en"]);
@@ -13,7 +14,7 @@ export type Palette = z.infer<typeof paletteSchema>;
 export type Accent = z.infer<typeof accentSchema>;
 export type Density = z.infer<typeof densitySchema>;
 
-export const preferenceStorageKey = `${project.storageNamespace}-preferences-v1`;
+export const preferenceStorageKey = interfacePreferenceStorageKey(project.storageNamespace);
 export const modeStorageKey = appearanceStorageKey(project.storageNamespace);
 export const preferenceSchema = z.object({
   version: z.literal(1),

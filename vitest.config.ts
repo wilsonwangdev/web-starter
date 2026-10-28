@@ -14,12 +14,14 @@ export default defineConfig({
         test: {
           name: "node",
           environment: "node",
-          include: ["tests/*.test.ts"],
+          include: ["tests/*.test.ts", "packages/ui/tests/**/*.test.ts"],
         },
       },
       {
         extends: false,
         plugins: [react(), tailwindcss()],
+        resolve: { dedupe: ["react", "react-dom"] },
+        optimizeDeps: { include: ["cn/engine", "cn/tables", "zod/mini"] },
         define: { "import.meta.env.PUBLIC_PROJECT": JSON.stringify(project) },
         test: {
           name: "browser",
