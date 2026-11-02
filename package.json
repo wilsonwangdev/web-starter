@@ -52,7 +52,7 @@
   },
   "devDependencies": {
     "@tailwindcss/vite": "4.3.3",
-    "@types/node": "26.6.5",
+    "@types/node": "26.6.6",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "@types/web-app-manifest": "1.0.9",
@@ -62,7 +62,7 @@
     "husky": "9.1.7",
     "lint-staged": "17.6.0",
     "playwright": "1.64.1",
-    "shadcn": "4.22.1",
+    "shadcn": "4.23.0",
     "stylelint": "17.16.0",
     "tailwindcss": "4.3.3",
     "typescript": "7.0.2",
